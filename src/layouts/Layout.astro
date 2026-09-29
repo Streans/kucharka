@@ -1,23 +1,30 @@
+---
+import '../styles/global.css';
+const { title = 'Kuchařka' } = Astro.props;
+---
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="strip"></div>
+    <header class="wrap top">
+      <a href="/" class="logo">Kuchařka</a>
+      <a href="#" class="back">← portfolio</a>
+    </header>
+    <main class="wrap"><slot /></main>
+    <footer class="wrap foot">© 2026 · projekt do portfolia</footer>
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  .top { display: flex; justify-content: space-between; align-items: baseline; padding-top: 26px; padding-bottom: 26px; }
+  .logo { font: 400 32px var(--font-head); color: var(--red); text-decoration: none; }
+  .back { font-size: 14px; color: var(--muted); text-decoration: none; }
+  .foot { border-top: 1px solid var(--line); margin-top: 90px; padding-top: 22px; padding-bottom: 40px; font-size: 14px; color: var(--muted); }
 </style>

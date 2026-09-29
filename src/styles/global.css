@@ -1,0 +1,17 @@
+:root {
+  --red: #D8354C; --red-dark: #A82438; --pink: #F4DCD8;
+  --page: #FCFAF7; --card: #FFFFFF; --ink: #2B1015;
+  --muted: #2B101599; --line: #2B101618;
+  --font-head: "Instrument Serif", Georgia, serif;
+  --font-body: Manrope, system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 17px/1.6 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-head); font-weight: 400; line-height: 1.05; margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 22px; }
+.strip {
+  height: 14px;
+  background: conic-gradient(var(--red) 25%, var(--pink) 0 50%, var(--red) 0 75%, var(--pink) 0) 0 0 / 14px 14px;
+}
