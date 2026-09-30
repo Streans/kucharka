@@ -12,6 +12,6 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .wrap { max-width: 960px; margin: 0 auto; padding: 0 22px; }
 .strip {
-  height: 14px;
-  background: conic-gradient(var(--red) 25%, var(--pink) 0 50%, var(--red) 0 75%, var(--pink) 0) 0 0 / 14px 14px;
+  height: 36px;
+  background: url('/towel-border.png') no-repeat center / cover;
 }
