@@ -4,12 +4,22 @@ import Base from '../layouts/Layout.astro';
 import RecipeCard from '../components/RecipeCard.astro';
 
 const recepty = await getCollection('recepty');
+const ids = recepty.map((r) => r.id);
 ---
 
 <Base>
   <section class="hero">
-    <h1>Domácí <em>recepty</em>, které fungují</h1>
-    <p>Jednoduché věci, které vařím pořád dokola.</p>
+    <div class="hero-text">
+      <h1>Domácí <em>recepty</em>, které fungují</h1>
+      <p>Jednoduché věci, které vařím pořád dokola.</p>
+    </div>
+    <button
+      class="varecka"
+      aria-label="Náhodný recept"
+      data-recepty={JSON.stringify(ids)}
+    >
+      <img src="/varecka.webp" alt="" width="90" height="auto" />
+    </button>
   </section>
 
   <div class="filtr" role="group" aria-label="Filtr receptů">
@@ -34,18 +44,62 @@ const recepty = await getCollection('recepty');
 </Base>
 
 <style>
-  .hero { padding: 60px 0 40px; }
+  .hero {
+    padding: 60px 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .hero-text { flex: 1; min-width: 0; }
+
   h1 { font-size: clamp(42px, 9vw, 72px); }
   em { color: var(--red); }
   .hero p { margin: 14px 0 0; color: var(--muted); }
 
+  /* Vařečka */
+  .varecka {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    transform: rotate(24deg);
+    transform-origin: bottom center;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(2px 6px 10px rgba(43, 16, 21, 0.18));
+  }
+  .varecka:hover { transform: rotate(32deg); }
+  .varecka:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .varecka img { display: block; width: auto; height: 193px; }
+
+  @keyframes michat {
+    0%   { transform: rotate(24deg); }
+    20%  { transform: rotate(48deg); }
+    40%  { transform: rotate(8deg);  }
+    60%  { transform: rotate(42deg); }
+    80%  { transform: rotate(16deg); }
+    100% { transform: rotate(24deg); }
+  }
+  .varecka.michat { animation: michat 0.5s ease forwards; }
+
+  @media (max-width: 540px) {
+    .hero { flex-wrap: wrap; }
+    .varecka { align-self: auto; }
+    .varecka img { width: 72px; }
+  }
+
+  /* Filtr */
   .filtr {
     display: flex;
     gap: 8px;
     margin-bottom: 32px;
     flex-wrap: wrap;
   }
-
   .btn {
     padding: 7px 18px;
     border: 1.5px solid var(--line);
@@ -57,12 +111,9 @@ const recepty = await getCollection('recepty');
     transition: border-color .15s, background .15s, color .15s;
   }
   .btn:hover { border-color: var(--red); color: var(--red); }
-  .btn.active {
-    background: var(--red);
-    border-color: var(--red);
-    color: #fff;
-  }
+  .btn.active { background: var(--red); border-color: var(--red); color: #fff; }
 
+  /* Grid */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -73,20 +124,37 @@ const recepty = await getCollection('recepty');
 </style>
 
 <script>
+  // Filtr
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filtr .btn');
   const cards = document.querySelectorAll<HTMLElement>('.grid > [data-kategorie]');
-
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const filter = btn.dataset.filter!;
-
       buttons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
-
       cards.forEach((card) => {
-        const match = filter === 'vse' || card.dataset.kategorie === filter;
-        card.classList.toggle('hidden', !match);
+        card.classList.toggle('hidden', filter !== 'vse' && card.dataset.kategorie !== filter);
       });
     });
+  });
+
+  // Vařečka – náhodný recept
+  const varecka = document.querySelector<HTMLButtonElement>('.varecka')!;
+  const ids: string[] = JSON.parse(varecka.dataset.recepty!);
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+  varecka.addEventListener('click', () => {
+    const id = ids[Math.floor(Math.random() * ids.length)];
+    const url = `${base}/recepty/${id}`;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      window.location.href = url;
+      return;
+    }
+
+    varecka.classList.add('michat');
+    varecka.addEventListener('animationend', () => {
+      window.location.href = url;
+    }, { once: true });
   });
 </script>
