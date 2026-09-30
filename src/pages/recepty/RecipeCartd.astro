@@ -1,0 +1,15 @@
+---
+const { title, cas, porce, href } = Astro.props;
+---
+<article class="card">
+  <h3>{title}</h3>
+  <p>{cas} min · {porce} porce</p>
+  <a href={href}>Otevřít recept</a>
+</article>
+
+<style>
+  .card { background: var(--card); border: 1px solid var(--line); padding: 24px 22px; }
+  h3 { font-size: 30px; }
+  p { margin: 6px 0 20px; font-size: 14px; color: var(--muted); }
+  a { font-weight: 600; font-size: 15px; text-decoration: none; border-bottom: 1.5px solid var(--red); padding-bottom: 1px; }
+</style>

@@ -1,11 +1,30 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const recepty = await getCollection('recepty');
 ---
+<Base>
+  <section class="hero">
+    <h1>Domácí <em>recepty</em>, které fungují</h1>
+    <p>Jednoduché věci, které vařím pořád dokola.</p>
+  </section>
+  <div class="grid">
+    {recepty.map((r) => (
+      <a class="card" href={`/recepty/${r.id}`}>
+        <h2>{r.data.title}</h2>
+        <p>{r.data.cas} · {r.data.porce} porce</p>
+      </a>
+    ))}
+  </div>
+</Base>
 
-<Layout>
-	<Welcome />
-</Layout>
+<style>
+  .hero { padding: 60px 0 50px; }
+  h1 { font-size: clamp(42px, 9vw, 72px); }
+  em { color: var(--red); }
+  .hero p { margin: 14px 0 0; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+  .card { display: block; padding: 22px; color: inherit; text-decoration: none; border: 1px solid var(--border); border-radius: 12px; }
+  .card p { color: var(--muted); }
+</style>
