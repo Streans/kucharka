@@ -1,6 +1,8 @@
 ---
 title: Dýňová polévka
 kategorie: polevky
+foto: ../../assets/polevka-shora.webp
+fotoDetail: ../../assets/polevka-sikmo.webp
 cas: 40
 porce: 4
 ingredience:
